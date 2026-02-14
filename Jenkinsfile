@@ -4,7 +4,7 @@ pipeline {
 
     // Ensure Maven is available (uses the name configured in 'Global Tool Configuration')
     tools {
-        maven 'Maven 3.9' 
+        maven 'Default' 
     }
 
     stages {
