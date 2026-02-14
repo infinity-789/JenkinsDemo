@@ -31,7 +31,7 @@ pipeline {
                 always {
                     // Uses the JUnit plugin to archive and display test results
                     // Path is standard for Maven projects: target/surefire-reports/
-                    junit testResults: '**/target/surefire-reports/*.xml', allowEmptyResults: true
+                    junit testResults: '**/target/surefire-reports/*.xml'
                 }
             }
         }
