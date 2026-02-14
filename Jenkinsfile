@@ -18,14 +18,14 @@ pipeline {
         stage('Build') {
             steps {
                 // Compiles the code and packages it into a JAR
-                sh 'mvn clean package -DskipTests'
+                bat 'mvn clean package -DskipTests'
             }
         }
 
         stage('Test') {
             steps {
                 // Executes the JUnit tests
-                sh 'mvn test'
+                bat 'mvn test'
             }
             post {
                 always {
