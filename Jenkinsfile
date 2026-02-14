@@ -18,7 +18,7 @@ pipeline {
         stage('Build') {
             steps {
                 // Compiles the code and packages it into a JAR
-                bat 'mvn clean package -DskipTests'
+                bat 'mvn clean package'
             }
         }
 
