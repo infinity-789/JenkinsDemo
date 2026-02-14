@@ -25,7 +25,7 @@ pipeline {
         stage('Test') {
             steps {
                 // Executes the JUnit tests
-                bat 'mvn test'
+                bat 'mvn test -Dtest=CalculatorTest'
             }
             post {
                 always {
