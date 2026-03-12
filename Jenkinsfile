@@ -1,8 +1,6 @@
 pipeline {
-    // Specifies that this pipeline can run on any available agent
     agent any
 
-    // Ensure Maven is available (uses the name configured in 'Global Tool Configuration')
     tools {
         maven 'Default' 
     }
@@ -10,28 +8,34 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Automatically checks out code from the SCM (Git)
                 checkout scm
             }
         }
 
         stage('Build') {
             steps {
-                // Compiles the code and packages it into a JAR
                 bat 'mvn clean package'
             }
         }
 
         stage('Test') {
             steps {
-                // Executes the JUnit tests
+                // JaCoCo will automatically attach to this execution
                 bat 'mvn test -Dtest=CalculatorTest'
             }
             post {
                 always {
-                    // Uses the JUnit plugin to archive and display test results
-                    // Path is standard for Maven projects: target/surefire-reports/
+                    // 1. Archive JUnit results
                     junit testResults: '**/target/surefire-reports/*.xml'
+                    
+                    // 2. Record JaCoCo Coverage
+                    // This creates the "Code Coverage" link and trend graph in Jenkins
+                    jacoco(
+                        execPattern: '**/target/jacoco.exec',
+                        classPattern: '**/target/classes',
+                        sourcePattern: '**/src/main/java',
+                        inclusionPattern: '**/*.class'
+                    )
                 }
             }
         }
@@ -39,10 +43,10 @@ pipeline {
 
     post {
         success {
-            echo 'Build and Tests passed successfully!'
+            echo 'Build, Tests, and Coverage analysis completed successfully!'
         }
         failure {
-            echo 'Build or Tests failed. Please check the logs and JUnit report.'
+            echo 'Something went wrong. Check the logs, JUnit, and JaCoCo reports.'
         }
     }
 }
